@@ -68,15 +68,14 @@ export default function BottomMenu({ navigation, currentScreen = 'Home' }) {
 
 const styles = StyleSheet.create({
   bottomMenu: {
-    position: 'absolute',
+    left: '0.94%',
     bottom: 0,
-    left: 0,
-    right: 0,
+    width: '98%',
     backgroundColor: '#5846D8',
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: 15,
-    paddingBottom: 30,
+    paddingBottom: 10,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     elevation: 10,
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   menuText: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: 11,
     fontWeight: '500',
     opacity: 0.7,

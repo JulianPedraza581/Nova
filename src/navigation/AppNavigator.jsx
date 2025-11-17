@@ -13,12 +13,24 @@ import BottomMenu from "../components/BottomMenu";
 
 const Stack = createNativeStackNavigator();
 
+// 🔹 Mover este helper arriba
+const ScreenWithMenu = (Component, screenName) => {
+  return function WrappedScreen(props) {
+    return (
+      <View style={{ flex: 1 }}>
+        <Component {...props} />
+        <BottomMenu navigation={props.navigation} currentScreen={screenName} />
+      </View>
+    );
+  };
+};
+
 export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false, // ocultamos header nativo
+          headerShown: false, 
         }}
       >
         <Stack.Screen name="Home" component={ScreenWithMenu(HomeScreen, "Home")} />
@@ -31,15 +43,3 @@ export default function AppNavigator() {
     </NavigationContainer>
   );
 }
-
-// Función para envolver cada pantalla con el menú
-const ScreenWithMenu = (Component, screenName) => {
-  return function WrappedScreen(props) {
-    return (
-      <View style={{ flex: 1 }}>
-        <Component {...props} />
-        <BottomMenu navigation={props.navigation} currentScreen={screenName} />
-      </View>
-    );
-  };
-};

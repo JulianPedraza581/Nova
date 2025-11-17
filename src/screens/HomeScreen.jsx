@@ -5,6 +5,7 @@ import { PieChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Header from '../components/Header';
 
+
 const screenWidth = Dimensions.get('window').width;
 
 export default function HomeScreen({ navigation }) {
@@ -28,118 +29,123 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+      {/* -------------------------- */}
+      {/* HEADER FIJO */}
+      {/* -------------------------- */}
+      <View style={styles.headerWrapper}>
+        <Header navigation={navigation} type="home" userName="Camilo Otalora" />
+
+        <View style={styles.logoSection}>
+
+          {/* PUNTOS */}
+          <View style={styles.dotsContainer}>
+            <View style={styles.dotsGrid}>
+              {renderDots(850)}
+            </View>
+          </View>
+
+          {/* TRIÁNGULOS */}
+          <View style={styles.triangleLeft} />
+          <View style={styles.triangleRight} />
+
+          {/* LOGO */}
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
+      </View>
+
+      {/* -------------------------- */}
+      {/* CONTENIDO SCROLL */}
+      {/* -------------------------- */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
 
-        {/* HEADER */}
-        <View style={styles.header}>
-          <Header navigation={navigation} type="home" userName="Camilo Otalora" />
-
-          {/* Triángulos + Puntos + Logo */}
-          <View style={styles.logoSection}>
-
-            {/* PUNTOS AL FONDO */}
-            <View style={styles.dotsContainer}>
-              <View style={styles.dotsGrid}>
-                {renderDots(850)}
-              </View>
-            </View>
-
-            {/* TRIÁNGULO MORADO */}
-            <View style={styles.triangleLeft} />
-
-            {/* TRIÁNGULO FUCSIA */}
-            <View style={styles.triangleRight} />
-
-            {/* LOGO POR ENCIMA DE TODO */}
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-              resizeMode="contain"
+        {/* CARD GASTOS */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Resumen De Gastos</Text>
+          <View style={styles.chartContainer}>
+            <PieChart
+              data={expenseData}
+              width={screenWidth - 80}
+              height={200}
+              chartConfig={chartConfig}
+              accessor="population"
+              backgroundColor="transparent"
+              paddingLeft="15"
+              center={[10, 0]}
+              absolute
             />
           </View>
         </View>
 
-        {/* ---- CONTENIDO ---- */}
-        <View style={styles.content}>
-
-          {/* CARD GASTOS */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Resumen De Gastos</Text>
-            <View style={styles.chartContainer}>
-              <PieChart
-                data={expenseData}
-                width={screenWidth - 80}
-                height={220}
-                chartConfig={chartConfig}
-                accessor="population"
-                backgroundColor="transparent"
-                paddingLeft="15"
-                center={[10, 0]}
-                absolute
-              />
+        {/* CARD POSGRADO */}
+        <View style={styles.postgraduateCard}>
+          <View style={styles.postgraduateHeader}>
+            <View style={styles.piggyBankIcon}>
+              <Text style={styles.piggyBankEmoji}>🐷</Text>
             </View>
+
+            <View style={styles.postgraduateTextContainer}>
+              <Text style={styles.postgraduateTitle}>Financiación de posgrado</Text>
+            </View>
+
+            <Text style={styles.postgraduatePercentage}>{postgraduateProgress}%</Text>
           </View>
 
-          {/* CARD POSGRADO */}
-          <View style={styles.postgraduateCard}>
-            <View style={styles.postgraduateHeader}>
-              <View class={styles.piggyBankIcon}>
-                <Text style={styles.piggyBankEmoji}>🐷</Text>
-              </View>
-
-              <View style={styles.postgraduateTextContainer}>
-                <Text style={styles.postgraduateTitle}>Financiación de posgrado</Text>
-              </View>
-
-              <Text style={styles.postgraduatePercentage}>{postgraduateProgress}%</Text>
-            </View>
-
-            <View style={styles.progressBarContainer}>
-              <View style={[styles.progressBar, { width: `${postgraduateProgress}%` }]} />
-            </View>
+          <View style={styles.progressBarContainer}>
+            <View style={[styles.progressBar, { width: `${postgraduateProgress}%` }]} />
           </View>
-
         </View>
+
       </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: '#F5F5F7',
   },
+
+  // -------------------------------------
+  // HEADER FIJO
+  // -------------------------------------
+  headerWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    elevation: 100,
+    backgroundColor: '#4338CA',
+  },
+
+  // Hace que el contenido empiece debajo del header fijo
   scrollContent: {
+    paddingTop: 350,
     paddingBottom: 120,
   },
 
-  // ---------------------------
-  // HEADER (ENCIMA DE TODO)
-  // ---------------------------
-  header: {
-    backgroundColor: '#4338CA',
-    position: 'relative',
-    zIndex: 5,
-  },
-
   logoSection: {
-    height: 320,
+    height: 250,
     position: 'relative',
     overflow: 'hidden',
-    zIndex: 10, // ENCIMA DE TRIÁNGULOS Y PUNTOS
+    zIndex: 10,
   },
 
-  // ---------------------------
-  // PUNTOS (AL FONDO)
-  // ---------------------------
+  // Fondo de puntos
   dotsContainer: {
     position: 'absolute',
     width: '150%',
     height: '150%',
     top: 0,
     left: 0,
-    zIndex: 0, // FONDO REAL
+    zIndex: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -161,16 +167,14 @@ const styles = StyleSheet.create({
     margin: 3,
   },
 
-  // ---------------------------
-  // TRIÁNGULOS ENCIMA DE PUNTOS
-  // ---------------------------
+  // Triángulos
   triangleLeft: {
     position: 'absolute',
     left: 0,
     top: 0,
     width: 0,
     height: 0,
-    borderBottomWidth: 320,
+    borderBottomWidth: 250,
     borderRightWidth: 230,
     borderBottomColor: '#A855F7',
     borderRightColor: 'transparent',
@@ -182,17 +186,15 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     width: 0,
-    height: 0,
-    borderBottomWidth: 320,
+    height: 10,
+    borderBottomWidth: 250,
     borderLeftWidth: 230,
     borderBottomColor: '#EC4899',
     borderLeftColor: 'transparent',
     zIndex: 2,
   },
 
-  // ---------------------------
-  // LOGO ARRIBA DE TODO
-  // ---------------------------
+  // Logo
   logo: {
     position: 'absolute',
     top: 65,
@@ -202,9 +204,9 @@ const styles = StyleSheet.create({
     zIndex: 20,
   },
 
-  // ---------------------------
+  // -------------------------------------
   // CONTENIDO
-  // ---------------------------
+  // -------------------------------------
   content: {
     paddingHorizontal: 20,
     marginTop: 20,
@@ -214,8 +216,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 24,
     padding: 20,
+    top : -5,
     marginBottom: 20,
-    elevation: 4,
+    elevation: 3,
   },
 
   cardTitle: {
@@ -233,15 +236,16 @@ const styles = StyleSheet.create({
   postgraduateCard: {
     backgroundColor: '#9B7EF5',
     borderRadius: 24,
-    padding: 20,
-    marginBottom: 20,
-    elevation: 4,
+    top: -10,
+    padding: 10,
+    marginBottom: 0,
+    elevation: 20,
   },
 
   postgraduateHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 10,
     gap: 12,
   },
 
@@ -284,7 +288,7 @@ const styles = StyleSheet.create({
 
   progressBar: {
     height: '100%',
-    backgroundColor: '#000',
+    backgroundColor: '#6923dbff',
     borderRadius: 16,
   },
 });
